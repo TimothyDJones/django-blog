@@ -8,7 +8,11 @@
 
         <a href="{{ post.get_absolute_url }}">
             {{ post.pk }} : {{ post }}
-        </a> <br>
+        </a> 
+
+        [ <a href="{% url 'blog:edit' pk=post.pk %}">
+            Edit
+        </a> ] <br>
 
     {% endfor %}
 

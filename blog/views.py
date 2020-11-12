@@ -37,3 +37,19 @@ def create(request):
         {"section": "blog_create",
          "form": form
         })
+
+def edit(request, pk=None):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:detail', slug=post.slug)
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'blog/edit.html',
+        {"section": "blog_edit",
+         "form": form,
+         "post": post,
+        })
