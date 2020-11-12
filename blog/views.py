@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post
 
-from .forms import PostForm
+from .forms import PostForm, PostDeleteForm
 
 # Create your views here.
 def home(request):
@@ -50,6 +50,22 @@ def edit(request, pk=None):
 
     return render(request, 'blog/edit.html',
         {"section": "blog_edit",
+         "form": form,
+         "post": post,
+        })
+
+def delete(request, pk=None):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostDeleteForm(request.POST, instance=post)
+        if form.is_valid():
+            post.delete()
+            return redirect("home")
+    else:
+        form = PostDeleteForm(instance=post)
+
+    return render(request, 'blog/delete.html',
+        {"section": "blog_delete",
          "form": form,
          "post": post,
         })

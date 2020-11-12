@@ -7,3 +7,8 @@ class PostForm(ModelForm):
         fields = ["title",
                   "body",
                   "slug"]
+
+class PostDeleteForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = []
