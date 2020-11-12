@@ -6,7 +6,9 @@
 
     {% for post in posts %}
 
-        {{ post.pk }} : {{ post }} <br>
+        <a href="{{ post.get_absolute_url }}">
+            {{ post.pk }} : {{ post }}
+        </a> <br>
 
     {% endfor %}
 

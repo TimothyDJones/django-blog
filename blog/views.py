@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Post
 
@@ -10,4 +10,12 @@ def home(request):
     return render(request, "home.html", 
         {"section": "home",
          "posts": posts,
+        })
+
+def detail(request, slug=None):
+    post = get_object_or_404(Post, slug=slug)
+
+    return render(request, "blog/detail.html",
+        {"section": "blog_detail",
+         "post": post,
         })
