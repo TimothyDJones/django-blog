@@ -1,17 +1,25 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import permission_required
+from taggit.models import Tag
 
 from .models import Post
 
 from .forms import PostForm, PostDeleteForm
 
 # Create your views here.
-def home(request):
+def home(request, tag=None):
+    tag_obj = None
     
-    posts = Post.objects.all()
+    if not tag:
+        posts = Post.objects.all()
+    else:
+        tag_obj = get_object_or_404(Tag, slug=tag)
+        posts = Post.objects.filter(tags__in=[tag_obj])
 
     return render(request, "home.html", 
         {"section": "home",
          "posts": posts,
+         "tag": tag_obj,
         })
 
 def detail(request, slug=None):
@@ -22,6 +30,7 @@ def detail(request, slug=None):
          "post": post,
         })
 
+@permission_required('blog.add_post', raise_exception=True)
 def create(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -38,6 +47,7 @@ def create(request):
          "form": form
         })
 
+@permission_required('blog.change_post', raise_exception=True)
 def edit(request, pk=None):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -54,6 +64,7 @@ def edit(request, pk=None):
          "post": post,
         })
 
+@permission_required('blog.delete_post', raise_exception=True)
 def delete(request, pk=None):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':

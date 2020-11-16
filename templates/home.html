@@ -3,8 +3,15 @@
 {% block title %}<h1>Home</h1>{% endblock %}
 
 {% block content %}
-
+    <!--
     <p>{{ perms.blog }}</p>
+    -->
+
+    {% if tag %}
+    
+        <p>Posts with tag <strong>"{{ tag.name }}"</strong></p>
+
+    {% endif %}
 
     {% for post in posts %}
 
